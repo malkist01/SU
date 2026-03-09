@@ -27,9 +27,6 @@ ccflags-y += -I$(objtree)/security/selinux -include $(srctree)/include/uapi/asm-
 
 obj-$(CONFIG_KSU) += kernelsu.o
 
-$(info ------------------------)
-
-LPATH := /usr/bin/env PATH="$$PATH":/usr/bin:/usr/local/bin
 LPATH := /usr/bin/env PATH="$$PATH":/usr/bin:/usr/local/bin
 MDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
@@ -74,11 +71,11 @@ ccflags-y += -DKSU_VERSION_TAG=\"$(KSU_VERSION_TAG_FALLBACK)\"
 endif
 
 ifndef KSU_NEXT_MANAGER_SIZE
-ccflags-y += -DEXPECTED_SIZE=$(KSU_NEXT_MANAGER_SIZE)
+KSU_NEXT_MANAGER_SIZE := 0x375
 endif
 
 ifndef KSU_NEXT_MANAGER_HASH
-ccflags-y += -DEXPECTED_HASH=\"$(KSU_NEXT_MANAGER_HASH)\"
+KSU_NEXT_MANAGER_HASH := 484fcba6e6c43b1fb09700633bf2fb4758f13cb0b2f4457b80d075084b26c588
 endif
 
 ifdef KSU_MANAGER_PACKAGE
@@ -86,8 +83,8 @@ ccflags-y += -DKSU_MANAGER_PACKAGE=\"$(KSU_MANAGER_PACKAGE)\"
 $(info -- KernelSU-Next Manager package name: $(KSU_MANAGER_PACKAGE))
 endif
 
-$(info -- Next Manager signature size: 0x31c)
-$(info -- Next Manager signature hash: 1ab6077099505a4f5ff851732d5d965a4908af7f60c871f23b4b3a58e80e6cd3)
+$(info -- KernelSU-Next Manager signature size: $(KSU_NEXT_MANAGER_SIZE))
+$(info -- KernelSU-Next Manager signature hash: $(KSU_NEXT_MANAGER_HASH))
 
 # RKSU: checks for available hook
 ## Logic flipped for HAVE_KSU_HOOK: 0 is success, 1 is failure
